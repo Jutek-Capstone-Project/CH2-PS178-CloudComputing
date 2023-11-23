@@ -7,7 +7,11 @@
    * Create Database (Sesuai dengan nama di env)
    * Isiin tabelnya (Copy paste dari database.sql)
 3. Buka Visual Studio Code, buka folder direktori ini
-4. Masukin node app.js di terminal, terus di run
+4. Di terminal VSCode, masukin command:
+  * npm init --y
+  * npm install
+  * npm install express express-validator mysql2 dotenv jsonwebtoken bcrypt
+  * node app.js 
 5. Masukkan url berikut:
    * Sign Up: http://localhost:3000/api/signup
    * Login: http://localhost:3000/api/login
