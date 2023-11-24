@@ -3,9 +3,17 @@
 **Tutorial penggunaan API Login dan Signup**:
 1. Download direktori ini (bisa git clone atau download as zip)
 2. Set Up Database
-   * Setting username dan password
-   * Create Database (Sesuai dengan nama di env)
-   * Isiin tabelnya (Copy paste dari database.sql)
+   * Buka terminal dulu, bs lewat Win+R atau buka cmd/powershell
+   * Cek di device km udah ada mysql apa belum, bs coba "mysqld --version"
+   * Kalau belum bisa cobaa install mysql duluu lewat sinii, https://dev.mysql.com/downloads/installer/
+   * Kalau udah, masukin "mysqld --version" buat konfirm kalo udah ke download
+   * Akses mysql di terminal: "mysql -u root -p"
+   * Masukin password, kalo merasa belum pernah bikin password klik enter ajaa
+   * Masukin "SHOW DATABASES" buat cek ada database apa ajaa so far
+   * kalo belum ada bikin aja "CREATE DATABASE login_signup_auth;" buat bikin database baru
+   * masukin "USE DATABASE login_signup_auth;" buat nge refer ke database yg baru dibikin itu
+   * selanjutnya copy paste ajaa dari yang ada di database.sql
+   * Nahh setelah ini bisa lanjut ke langkah selanjutnya
 3. Buka Visual Studio Code, buka folder direktori ini
 4. Di terminal VSCode, masukin command:
   * npm init --y
