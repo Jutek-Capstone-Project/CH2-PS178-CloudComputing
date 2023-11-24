@@ -16,10 +16,10 @@
    * Nahh setelah ini bisa lanjut ke langkah selanjutnya
 3. Buka Visual Studio Code, buka folder direktori ini
 4. Di terminal VSCode, masukin command:
-  * npm init --y
-  * npm install
-  * npm install express express-validator mysql2 dotenv jsonwebtoken bcrypt
-  * node app.js 
+   * npm init --y
+   * npm install
+   * npm install express express-validator mysql2 dotenv jsonwebtoken bcrypt
+   * node app.js 
 5. Masukkan url berikut:
    * Sign Up: http://localhost:3000/api/signup
    * Login: http://localhost:3000/api/login
