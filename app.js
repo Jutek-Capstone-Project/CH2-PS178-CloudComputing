@@ -1,6 +1,6 @@
 import express from 'express';
-import dbConnection from './dbConnection.js';
-import routes from './routes.js';
+import dbConnection from './nodejs-mysql-auth-api/dbConnection.js';
+import routes from './nodejs-mysql-auth-api/routes.js';
 const app = express();
 const port = process.env.PORT || 3000;
 
