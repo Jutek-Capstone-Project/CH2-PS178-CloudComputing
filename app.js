@@ -2,7 +2,7 @@ import express from 'express';
 import dbConnection from './nodejs-mysql-auth-api/dbConnection.js';
 import routes from './nodejs-mysql-auth-api/routes.js';
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
