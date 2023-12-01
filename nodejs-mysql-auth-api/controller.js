@@ -167,4 +167,50 @@ export default {
             next(err);
         }
     },
+
+    logout: async (req, res, next) => {
+        try{
+            const refreshToken = req.headers.refresh_token;
+            // Verify the refresh token
+            const data = verifyToken(refreshToken, false);
+            if (data?.status) return res.status(data.status).json(data);
+
+            // Converting refresh token to md5 format
+            const md5Refresh = createHash('md5')
+                .update(refreshToken)
+                .digest('hex');
+
+            // Finding the refresh token in the database
+            const [refTokenRow] = await DB.execute(
+                'SELECT * from `refresh_tokens` WHERE token=?',
+                [md5Refresh]
+            );
+
+            if (refTokenRow.length !== 1) {
+                return res.json({
+                    status: 401,
+                    message: 'Unauthorized: Invalid Refresh Token.',
+                });
+            }
+
+            // Deleting the refresh token
+            const [result] = await DB.execute(
+                'DELETE FROM `refresh_tokens` WHERE `token`=?',
+                [md5Refresh]
+            );
+
+            if (!result.affectedRows) {
+                throw new Error('Failed to delete the Refresh token.');
+            }
+
+            res.json({
+                status: 200,
+                message: 'You have been successfully logged out.',
+            });
+        }
+
+        catch(err){
+            next(err);
+        }
+    }
 };

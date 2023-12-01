@@ -82,6 +82,9 @@ routes.post(
 // Get the user data by providing the access token
 routes.get('/profile', tokenValidation(), validate, controller.getUser);
 
+// Logout user by invalidating the refresh token
+routes.post('/logout', tokenValidation(true), validate, controller.logout);
+
 // Get new access and refresh token by providing the refresh token
 routes.get(
     '/refresh',
