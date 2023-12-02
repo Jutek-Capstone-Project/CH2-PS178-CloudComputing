@@ -1,9 +1,17 @@
 import { Router } from 'express';
 import { body, header } from 'express-validator';
 import controller, { validate, fetchUserByEmailOrID } from './controller.js';
+import {Storage} from '@google-cloud/storage';
+import express from 'express';
+import csv from 'csv-parser';
+import fs from 'fs';
+
+const bucketName = 'silent-fuze-400506.appspot.com';
+const fileName = 'arena.csv';
 
 const routes = Router({ strict: true });
-
+const storage = new Storage();
+const bucket = storage.bucket(bucketName);
 // Token Validation Rule
 const tokenValidation = (isRefresh = false) => {
     let refreshText = isRefresh ? 'Refresh' : 'Authorization';
@@ -92,5 +100,31 @@ routes.get(
     validate,
     controller.refreshToken
 );
+
+routes.get('/data', (req, res) => {
+    const data = [];
+  
+    const file = bucket.file(fileName);
+    file.createReadStream()
+      .pipe(csv())
+      .on('data', (row) => {
+        data.push(row);
+      })
+      .on('end', () => {
+        res.json(data);
+      });
+  });
+
+
+
+routes.get('/dbdata', async (req, res) => {
+    try{
+        const [result] = await DB.execute('SELECT * FROM `users`');
+        res.json(result)
+    }
+    catch(err){
+        console.log(err)
+    }
+    });
 
 export default routes;
