@@ -1,9 +1,13 @@
 import { Router } from 'express';
 import { body, header } from 'express-validator';
 import controller, { validate, fetchUserByEmailOrID } from './controller.js';
+import express from 'express';
+import csv from 'csv-parser';
+import fs from 'fs';
+import DB from './dbConnection.js';
 
 const routes = Router({ strict: true });
-
+const fileName = '/Users/whs9801/CH2-PS178-CloudComputing/nodejs-mysql-auth-api/arena.csv'
 // Token Validation Rule
 const tokenValidation = (isRefresh = false) => {
     let refreshText = isRefresh ? 'Refresh' : 'Authorization';
@@ -92,5 +96,63 @@ routes.get(
     validate,
     controller.refreshToken
 );
+
+routes.get('/data', (req, res) => {
+    //var parser = csv({columns: true}, function (err, records) {
+        //console.log(records);
+    //});
+
+    //fs.createReadStream(fileName).pipe(parser);
+
+    const results = [];
+    fs.createReadStream(fileName)
+        .pipe(csv())
+        .on('data', (data) => results.push(data))
+       .on('end', () => {
+            res.json(results);
+        });
+})
+
+routes.get('/data/:id', (req, res) => {
+    const id = parseInt(req.params.id)
+    const results = [];
+    fs.createReadStream(fileName)
+        .pipe(csv())
+        .on('data', (row) => {
+            if (row.id === id) {
+                results.push(row);
+            }
+        })
+        .on('end', () => {
+            res.json(results);
+        })
+    });
+
+routes.get('/data/column/:columnName/:columnValue?', (req, res) => {
+    const columnName = req.params.columnName;
+    const columnValue = req.params.columnValue;
+    const result = [];
+  
+    fs.createReadStream(fileName)
+      .pipe(csv())
+      .on('data', (row) => {
+        if (!columnValue || row[columnName] === columnValue) {
+          result.push(row);
+        }
+      })
+      .on('end', () => {
+        res.json(result);
+      }); 
+    })
+
+routes.get('/dbdata', async (req, res) => {
+try{
+    const [result] = await DB.execute('SELECT * FROM `users`');
+    res.json(result)
+}
+catch(err){
+    console.log(err)
+}
+});
 
 export default routes;

@@ -33,7 +33,6 @@ ALTER TABLE `refresh_tokens`
   ADD CONSTRAINT `refresh_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`grn_code`) ON DELETE CASCADE;
 COMMIT;
 
-
 DELIMITER $$
 CREATE TRIGGER TRGUpdateUsers
     BEFORE INSERT ON users
