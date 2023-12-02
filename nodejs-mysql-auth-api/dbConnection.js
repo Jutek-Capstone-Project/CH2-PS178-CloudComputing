@@ -15,7 +15,7 @@ const connection = () => {
         ...clientOpts,
         user: 'myinstance',
         password: 'Violalee99',
-        database: 'login_signup_auth',
+        database: 'authentication',
     });
 };
 
