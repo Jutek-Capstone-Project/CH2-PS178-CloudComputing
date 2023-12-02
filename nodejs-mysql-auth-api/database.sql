@@ -13,6 +13,7 @@ CREATE TABLE `users` (
   `name` varchar(30) NOT NULL,
   `email` varchar(40) NOT NULL,
   `password` varchar(70) NOT NULL,
+  `grn_code` varchar(10) GENERATED ALWAYS AS (CONCAT('GRN', `id`)) STORED,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -22,12 +23,12 @@ ALTER TABLE `refresh_tokens`
   ADD KEY `token` (`token`);
 
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`grn_code`),
   ADD UNIQUE KEY `email` (`email`);
 
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `refresh_tokens`
-  ADD CONSTRAINT `refresh_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `refresh_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`grn_code`) ON DELETE CASCADE;
 COMMIT;
