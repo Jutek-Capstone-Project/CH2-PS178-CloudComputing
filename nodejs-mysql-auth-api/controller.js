@@ -67,8 +67,8 @@ export default {
             }
 
             // Generating Access and Refresh Token
-            const access_token = generateToken({ id: user.id });
-            const refresh_token = generateToken({ id: user.id }, false);
+            const access_token = generateToken({ id: user.grn_code });
+            const refresh_token = generateToken({ id: user.grn_code }, false);
 
             const md5Refresh = createHash('md5')
                 .update(refresh_token)
@@ -77,7 +77,7 @@ export default {
             // Storing refresh token in MD5 format
             const [result] = await DB.execute(
                 'INSERT INTO `refresh_tokens` (`user_id`,`token`) VALUES (?,?)',
-                [user.id, md5Refresh]
+                [user.grn_code, md5Refresh]
             );
 
             if (!result.affectedRows) {
@@ -85,8 +85,13 @@ export default {
             }
             res.json({
                 status: 200,
-                access_token,
-                refresh_token,
+                "error": false,
+                "message" : "success",
+                "loginResult" : {
+                    "userId": user.grn_code,
+                    "userName": user.name,
+                    "token" : access_token
+                }
             });
         } catch (err) {
             next(err);
@@ -141,8 +146,8 @@ export default {
             }
 
             // Generating new access and refresh token
-            const access_token = generateToken({ id: data.id });
-            const refresh_token = generateToken({ id: data.id }, false);
+            const access_token = generateToken({ id: data.grn_code });
+            const refresh_token = generateToken({ id: data.grn_code }, false);
 
             const newMd5Refresh = createHash('md5')
                 .update(refresh_token)
