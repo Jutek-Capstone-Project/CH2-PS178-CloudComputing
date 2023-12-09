@@ -29,3 +29,8 @@
 **Further Updates**
 1. Ubah databasenya jd dari Cloud (tapi perlu konsen dari anggota lainnya dulu)
 2. Deploy API nya melalui Vercel (kalau dirasa perlu)
+
+**Penggunaan Branch**
+* main branch -> Original sourcecode
+* branch-1 -> sourcecode untuk development di local
+* branch-2 -> sourcecode untuk development di gcloud
