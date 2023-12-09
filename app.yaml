@@ -2,8 +2,12 @@ runtime: nodejs20
 env: standard
 instance_class: F1 
 
+env_variables:
+  cloud_storage_bucket : 'dataset-bucket-9801'
+
 beta_settings:
-  cloud_sql_instances : 'silent-fuze-400506:asia-southeast2:signup-login-auth'
+  cloud_sql_instances : 'silent-fuze-400506:us-central1:signup-login-auth'
+
 
 handlers:
 - url: /.*

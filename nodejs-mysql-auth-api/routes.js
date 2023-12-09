@@ -5,9 +5,10 @@ import {Storage} from '@google-cloud/storage';
 import express from 'express';
 import csv from 'csv-parser';
 import fs from 'fs';
+import DB from './dbConnection.js'; 
 
-const bucketName = 'silent-fuze-400506.appspot.com';
-const fileName = 'arena.csv';
+const bucketName = 'dataset-bucket-9801';
+const fileName = 'dataset_cleaned_25Nov.csv';
 
 const routes = Router({ strict: true });
 const storage = new Storage();
@@ -117,9 +118,9 @@ routes.get('/data', (req, res) => {
 
 
 
-routes.get('/dbdata', async (req, res) => {
+routes.get('/dbdata', (req, res) => {
     try{
-        const [result] = await DB.execute('SELECT * FROM `users`');
+        const [result] = DB.execute('SELECT * FROM `users`');
         res.json(result)
     }
     catch(err){
