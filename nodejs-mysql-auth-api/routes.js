@@ -5,9 +5,18 @@ import express from 'express';
 import csv from 'csv-parser';
 import fs from 'fs';
 import DB from './dbConnection.js';
+import Stripe from 'stripe';
+import admin from 'firebase-admin';
+
 
 const routes = Router({ strict: true });
 const fileName = '/Users/whs9801/CH2-PS178-CloudComputing/nodejs-mysql-auth-api/arena.csv'
+const serviceAccount = require('./serviceAccountKey.json');
+const stripe = Stripe('sk_test_51OLggCDVadqvWMEH2xy5NwCb0ViTaYZ2FRKBF4axp8lNZnlSH7PQsRMnLyC1u1O5Bg8XUtEG4FAYRCCxyw0zlaLm00J9fBHnqE');
+const firebaseAdmin = admin.initializeApp({
+    credential: serviceAccount,
+});
+
 // Token Validation Rule
 const tokenValidation = (isRefresh = false) => {
     let refreshText = isRefresh ? 'Refresh' : 'Authorization';
@@ -154,5 +163,68 @@ catch(err){
     console.log(err)
 }
 });
+
+routes.post('/process-payment', async(req, res) => {
+    const { amount, currency, token } = req.body;
+
+    try {
+        // Create a payment intent using the Stripe API
+        const paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency,
+        payment_method: token,
+        confirm: true,
+        });
+
+        // Return the payment intent status to the client
+        res.json({ status: paymentIntent.status });
+
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred while processing the payment.' });
+    }
+});
+
+routes.post('/payment', function(req, res){
+ 
+    // Moreover you can take more details from user
+    // like Address, Name, etc from form
+    stripe.customers.create({
+        email: req.body.stripeEmail,
+        source: req.body.stripeToken,
+        name: 'Gourav Hammad',
+        address: {
+            line1: 'TC 9/4 Old MES colony',
+            postal_code: '452331',
+            city: 'Indore',
+            state: 'Madhya Pradesh',
+            country: 'India',
+        }
+    })
+    .then((customer) => {
+ 
+        return stripe.charges.create({
+            amount: 2500,     // Charging Rs 25
+            description: 'Web Development Product',
+            currency: 'INR',
+            customer: customer.id
+        });
+    })
+    .then((charge) => {
+        res.send("Success")  // If no error occurs
+    })
+    .catch((err) => {
+        res.send(err)       // If some error occurs
+    });
+})
+
+routes.post('/notification', async (devicePushToken, title, body) => {
+    await firebaseAdmin.messaging().send({
+        token: devicePushToken,
+        notification: {
+            title: title,
+            body: body,
+        },
+    })
+})
 
 export default routes;
