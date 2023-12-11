@@ -85,8 +85,13 @@ export default {
             }
             res.json({
                 status: 200,
-                access_token,
-                refresh_token,
+                "error": false,
+                "message" : "success",
+                "loginResult" : {
+                    "userId": user.grn_code,
+                    "userName": user.name,
+                    "token" : access_token
+                }
             });
         } catch (err) {
             next(err);

@@ -4,7 +4,7 @@ import {Connector} from '@google-cloud/cloud-sql-connector';
 
 const connector = new Connector();
 const clientOpts = await connector.getOptions({
-  instanceConnectionName: 'silent-fuze-400506:asia-southeast2:signup-login-auth',
+  instanceConnectionName: 'silent-fuze-400506:us-central1:signup-login-auth',
   ipType: 'PUBLIC',
 });
 
@@ -15,7 +15,7 @@ const connection = () => {
         ...clientOpts,
         user: 'myinstance',
         password: 'Violalee99',
-        database: 'login_signup_auth',
+        database: 'authentication',
     });
 };
 

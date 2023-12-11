@@ -13,6 +13,7 @@ CREATE TABLE `users` (
   `name` varchar(30) NOT NULL,
   `email` varchar(40) NOT NULL,
   `password` varchar(70) NOT NULL,
+  `grn_code` varchar(10) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -28,6 +29,17 @@ ALTER TABLE `users`
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+
 ALTER TABLE `refresh_tokens`
-  ADD CONSTRAINT `refresh_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `refresh_tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`grn_code`) ON DELETE CASCADE;
 COMMIT;
+
+
+DELIMITER $$
+CREATE TRIGGER TRGUpdateUsers
+    BEFORE INSERT ON users
+    FOR EACH ROW 
+BEGIN  
+    SET NEW.grn_code = CONCAT('GRN', NEW.id);
+END$$
+DELIMITER;
