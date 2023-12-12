@@ -125,7 +125,6 @@ def recommend():
     # Extract input parameters from the JSON data
     lng = float(data['lng'])
     lat = float(data['lat'])
-    input_field = data['input_field']
 
     # Perform recommendations
     recommendations = recommend_location_neural_network(lapangan_df, model, scaler, lng, lat)
