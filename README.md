@@ -32,5 +32,5 @@
 
 **Penggunaan Branch**
 * main branch -> Original sourcecode
-* branch-1 -> sourcecode untuk development di local
-* branch-2 -> sourcecode untuk development di gcloud
+* branch-1 -> sourcecode untuk development di gcloud
+* branch-2 -> sourcecode untuk development di local
