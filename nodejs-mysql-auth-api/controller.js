@@ -90,7 +90,8 @@ export default {
                 "loginResult" : {
                     "userId": user.grn_code,
                     "userName": user.name,
-                    "token" : access_token
+                    "token" : access_token,
+                    "ref_token": refresh_token
                 }
             });
         } catch (err) {
