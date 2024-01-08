@@ -1,0 +1,7 @@
+runtime: python37
+entrypoint: gunicorn -b :$PORT --timeout=1200 main:app
+
+env_variables:
+  GOOGLE_APPLICATION_CREDENTIALS: '/home/william_hilmy_susatyo/CH2-PS178-Cloud_Computing/studied-brand-401713-41b8df43746b.json'
+ 
+
