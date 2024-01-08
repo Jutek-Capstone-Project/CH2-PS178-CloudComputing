@@ -17,7 +17,7 @@ import {kmeans} from 'ml-kmeans';
 
 const routes = Router({ strict: true });
 const fileName = '/Users/whs9801/CH2-PS178-CloudComputing/nodejs-mysql-auth-api/arena.csv'
-const stripe = Stripe('sk_test_51OLggCDVadqvWMEH2xy5NwCb0ViTaYZ2FRKBF4axp8lNZnlSH7PQsRMnLyC1u1O5Bg8XUtEG4FAYRCCxyw0zlaLm00J9fBHnqE');
+const stripe = new Stripe('sk_test_51OLggCDVadqvWMEH2xy5NwCb0ViTaYZ2FRKBF4axp8lNZnlSH7PQsRMnLyC1u1O5Bg8XUtEG4FAYRCCxyw0zlaLm00J9fBHnqE');
 let file = '/Users/whs9801/CH2-PS178-CloudComputing/dataset/Data Lapangan.csv';
 // const firebaseAdmin = admin.initializeApp({
 //     credential: serviceAccount,
@@ -152,6 +152,24 @@ routes.post(
     validate,
     controller.login
 );
+
+
+routes.post('/create-payment-intent', async (req, res) => {
+    const { amount } = req.body;
+    try {
+      // Create a PaymentIntent with the specified amount
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount,
+        currency: 'usd'
+      });
+  
+      // Send the client secret to the client-side for confirmation
+      res.json({ clientSecret: paymentIntent.client_secret });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
 
 // Get the user data by providing the access token
 routes.get('/profile', tokenValidation(), validate, controller.getUser);
